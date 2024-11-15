@@ -1,10 +1,16 @@
-version: '3'
 services:
   api:
     build: .
     ports:
-      - "1313:1313"
+      - "5000:5000"  # Mapeia a porta 5000 do container para a máquina host
     volumes:
-      - .:/app
+      - .:/app       # Monta o diretório atual como volume no container
+    command: flask run --host=0.0.0.0
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=development  # Define a variável de ambiente para o modo de desenvolvimento
+
+  test:
+    build: .
+    volumes:
+      - .:/app       # Monta o diretório atual como volume no container
+    command: python -m unittest discover

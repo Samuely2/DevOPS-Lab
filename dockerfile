@@ -1,20 +1,16 @@
-# Usar uma imagem base oficial do Python
 FROM python:3.9-slim
 
-# Definir o diretório de trabalho
+# Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar dependências
-COPY requirements.txt requirements.txt
-
-# Instalar dependências
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar os arquivos da API para o container
+# Copiar arquivos necessários
 COPY . .
 
-# Expor a porta 1313
-EXPOSE 1313
+# Instalar dependências
+RUN pip install -r requirements.txt
 
-# Comando para rodar a aplicação
-CMD ["python", "app.py"]
+# Expor a porta da API
+EXPOSE 5000
+
+# Comando para iniciar a aplicação
+CMD ["flask", "run", "--host=0.0.0.0"]
