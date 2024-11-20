@@ -1,16 +1,19 @@
+version: '3.9'
 services:
-  api:
+  app:
     build: .
     ports:
-      - "5000:5000"  # Mapeia a porta 5000 do container para a máquina host
-    volumes:
-      - .:/app       # Monta o diretório atual como volume no container
-    command: flask run --host=0.0.0.0
+      - "1313:1313"
     environment:
-      - FLASK_ENV=development  # Define a variável de ambiente para o modo de desenvolvimento
+      - JWT_SECRET_KEY=your_secret_key
+    depends_on:
+      - db
 
-  test:
-    build: .
-    volumes:
-      - .:/app       # Monta o diretório atual como volume no container
-    command: python -m unittest discover
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"

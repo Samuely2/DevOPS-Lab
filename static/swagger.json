@@ -1,95 +1,96 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "title": "InovaTech API",
-      "version": "1.0",
-      "description": "Documentação da API do laboratório de criação de APIs"
-    },
-    "host": "localhost:1313",
-    "schemes": [
-      "http"
-    ],
-    "paths": {
-      "/": {
-        "get": {
-          "summary": "Endpoint principal",
-          "description": "Verifica o status da API",
-          "responses": {
-            "200": {
-              "description": "Mensagem de status",
-              "schema": {
-                "type": "string"
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API CRUD - Produtos e Categorias",
+    "description": "Documentação da API para gerenciar produtos e categorias."
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Realiza login",
+        "description": "Retorna um token JWT após login bem-sucedido.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {"type": "string"},
+                "password": {"type": "string"}
               }
             }
           }
-        }
-      },
-      "/items": {
-        "get": {
-          "summary": "Obter lista de itens",
-          "description": "Retorna uma lista de itens disponíveis.",
-          "responses": {
-            "200": {
-              "description": "Lista de itens",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "/login": {
-        "post": {
-          "summary": "Login para gerar token JWT",
-          "description": "Gera um token JWT para autenticação.",
-          "responses": {
-            "200": {
-              "description": "Token de autenticação",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "access_token": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/protected": {
-        "get": {
-          "summary": "Rota protegida",
-          "description": "Acessa uma rota protegida. Requer token JWT.",
-          "security": [
-            {
-              "Bearer": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Acesso permitido à rota protegida",
-              "schema": {
-                "type": "string"
-              }
-            },
-            "401": {
-              "description": "Autenticação falhou ou token ausente"
-            }
-          }
+        ],
+        "responses": {
+          "200": {"description": "Login bem-sucedido"},
+          "401": {"description": "Credenciais inválidas"}
         }
       }
     },
-    "securityDefinitions": {
-      "Bearer": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
-        "description": "Token JWT a ser informado no formato: Bearer {token}"
+    "/categorias": {
+      "post": {
+        "summary": "Cria uma nova categoria",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {"type": "string"},
+                "descricao": {"type": "string"}
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {"description": "Categoria criada com sucesso"},
+          "400": {"description": "Erro de validação"}
+        }
+      },
+      "get": {
+        "summary": "Lista todas as categorias",
+        "responses": {
+          "200": {"description": "Lista de categorias"}
+        }
+      }
+    },
+    "/produtos": {
+      "post": {
+        "summary": "Cria um novo produto",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {"type": "string"},
+                "preco": {"type": "number"},
+                "categoria_id": {"type": "string"}
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {"description": "Produto criado com sucesso"},
+          "400": {"description": "Erro de validação"}
+        }
+      },
+      "get": {
+        "summary": "Lista todos os produtos",
+        "responses": {
+          "200": {"description": "Lista de produtos"}
+        }
       }
     }
   }
-  
+}

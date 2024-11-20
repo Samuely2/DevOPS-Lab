@@ -1,38 +1,24 @@
 from flask import Flask, jsonify, request
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
-
-# Habilitar CORS para todas as rotas
 CORS(app)
 
 # Configuração do JWT
 app.config['JWT_SECRET_KEY'] = 'your_secret_key'
 jwt = JWTManager(app)
 
-### Swagger UI ###
+# Configuração do Swagger UI
 SWAGGER_URL = '/swagger'
-API_DOC_URL = '/static/swagger.json'
-swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_DOC_URL)
+API_URL = '/static/swagger.json'
+swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-@app.route('/')
-def home():
-    return jsonify(message="API is running")
-
-@app.route('/items', methods=['GET'])
-def get_items():
-    return jsonify(items=["item1", "item2", "item3"])
-
-@app.route('/item/<string:item_id>', methods=['GET'])
-def get_item_by_id(item_id):
-    items = {"1": "item1", "2": "item2", "3": "item3"}
-    item = items.get(item_id)
-    if not item:
-        return jsonify(error="Item not found"), 404
-    return jsonify(item=item)
+# Banco de dados em memória
+produtos_db = {}
+categorias_db = {}
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -40,17 +26,50 @@ def login():
     username = data.get("username")
     password = data.get("password")
 
-    # Simulando validação de login
-    if username == "test" and password == "test":
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token)
+    if username == "admin" and password == "admin":
+        token = create_access_token(identity=username)
+        return jsonify(access_token=token), 200
     return jsonify(error="Invalid credentials"), 401
 
-@app.route('/protected', methods=['GET'])
+@app.route('/categorias', methods=['POST'])
 @jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    return jsonify(message=f"Hello, {current_user}")
+def create_categoria():
+    data = request.json
+    categoria_id = str(len(categorias_db) + 1)
+    nome = data.get("nome")
+    descricao = data.get("descricao")
+
+    if not nome or not descricao:
+        return jsonify(error="Nome e descrição são obrigatórios"), 400
+
+    categorias_db[categoria_id] = {"id": categoria_id, "nome": nome, "descricao": descricao}
+    return jsonify(message="Categoria criada", categoria=categorias_db[categoria_id]), 201
+
+@app.route('/categorias', methods=['GET'])
+def get_categorias():
+    return jsonify(categorias=list(categorias_db.values())), 200
+
+@app.route('/produtos', methods=['POST'])
+@jwt_required()
+def create_produto():
+    data = request.json
+    produto_id = str(len(produtos_db) + 1)
+    nome = data.get("nome")
+    preco = data.get("preco")
+    categoria_id = data.get("categoria_id")
+
+    if not all([nome, preco, categoria_id]):
+        return jsonify(error="Todos os campos são obrigatórios"), 400
+    if categoria_id not in categorias_db:
+        return jsonify(error="Categoria inválida"), 404
+
+    produtos_db[produto_id] = {"id": produto_id, "nome": nome, "preco": preco, "categoria_id": categoria_id}
+    return jsonify(message="Produto criado", produto=produtos_db[produto_id]), 201
+
+@app.route('/produtos', methods=['GET'])
+def get_produtos():
+    return jsonify(produtos=list(produtos_db.values())), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1313)
+

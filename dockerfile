@@ -1,16 +1,17 @@
-FROM python:3.9-slim
+# Use uma imagem base do Python
+FROM python:3.8-slim
 
-# Definir diretório de trabalho
+# Definir o diretório de trabalho no container
 WORKDIR /app
 
-# Copiar arquivos necessários
-COPY . .
+# Copiar todos os arquivos do diretório local para o diretório de trabalho do container
+COPY . /app
 
-# Instalar dependências
+# Instalar as dependências do projeto
 RUN pip install -r requirements.txt
 
-# Expor a porta da API
-EXPOSE 5000
+# Expor a porta 1313 no container
+EXPOSE 1313
 
-# Comando para iniciar a aplicação
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Executar o aplicativo Flask
+CMD ["python", "app.py"]
