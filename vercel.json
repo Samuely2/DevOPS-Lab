@@ -1,3 +1,9 @@
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/static/swagger-ui.html" }]
-}
+    "rewrites": [
+      {
+        "source": "/swagger",
+        "destination": "/static/swagger-ui.html"
+      }
+    ]
+  }
+  
