@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_from_directory, redirect
+from flask import Flask, json, jsonify, request, send_from_directory, redirect
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -19,6 +19,11 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 # Banco de dados em memória
 produtos_db = {}
 categorias_db = {}
+
+@app.route("/swagger.json")
+def swagger_json():
+    with open('swagger.json', 'r') as f:
+        return jsonify(json.load(f))
 
 @app.route('/login', methods=['POST'])
 def login():

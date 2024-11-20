@@ -1,0 +1,30 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Exemplo",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/categorias": {
+      "get": {
+        "summary": "Lista todas as categorias",
+        "responses": {
+          "200": {
+            "description": "Lista de Categorias",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "nome": { "type": "string" },
+                  "descricao": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
