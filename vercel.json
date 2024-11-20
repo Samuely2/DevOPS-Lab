@@ -1,4 +1,3 @@
 {
-    "source": "/swagger",
     "rewrites": [{ "source": "/(.*)", "destination": "/static/swagger-ui.html" }]
 }
