@@ -1,8 +1,7 @@
 {
     "rewrites": [
-      {
-        "source": "/swagger",
-        "destination": "/static/swagger-ui.html"
+      {   
+        "destination": "/static/index.html"
       }
     ]
   }
