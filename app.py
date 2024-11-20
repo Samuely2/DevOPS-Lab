@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, redirect
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configuração do JWT
 app.config['JWT_SECRET_KEY'] = 'your_secret_key'
@@ -22,7 +22,7 @@ categorias_db = {}
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'swagger-ui.html')
+    return redirect('/swagger', code=302)  # Redireciona para o Swagger UI
 
 @app.route('/static/<path:filename>')
 def serve_static(filename):
@@ -80,4 +80,3 @@ def get_produtos():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1313)
-
