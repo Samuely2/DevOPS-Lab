@@ -20,14 +20,6 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 produtos_db = {}
 categorias_db = {}
 
-@app.route('/')
-def index():
-    return redirect('/swagger', code=302)  # Redireciona para o Swagger UI
-
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('static', filename)
-
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
