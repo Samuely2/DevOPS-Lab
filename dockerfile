@@ -1,17 +1,19 @@
-# Use uma imagem base do Python
-FROM python:3.8-slim
+# Arquivo: Dockerfile
 
-# Definir o diretório de trabalho no container
+# Usando uma imagem base oficial do Python
+FROM python:3.10-slim
+
+# Definir o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copiar todos os arquivos do diretório local para o diretório de trabalho do container
+# Copiar os arquivos do projeto para o container
 COPY . /app
 
-# Instalar as dependências do projeto
-RUN pip install -r requirements.txt
+# Instalar as dependências do Python
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expor a porta 1313 no container
+# Expor a porta 1313 (ou a que você usar) para acesso ao servidor
 EXPOSE 1313
 
-# Executar o aplicativo Flask
+# Definir o comando padrão para iniciar a aplicação Flask
 CMD ["python", "app.py"]
