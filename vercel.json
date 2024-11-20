@@ -1,10 +1,12 @@
 {
     "version": 2,
     "builds": [
-      { "src": "api/**/*.js", "use": "@vercel/node" }
+      { "src": "api/**/*.js", "use": "@vercel/node" },
+      { "src": "public/swagger-ui.html", "use": "@vercel/static" },
+      { "src": "public/swagger.json", "use": "@vercel/static" }
     ],
     "routes": [
-      { "src": "/swagger-ui", "dest": "/public/swagger-ui.html" },
+      { "src": "/", "dest": "/public/swagger-ui.html" }, 
       { "src": "/swagger.json", "dest": "/public/swagger.json" },
       { "src": "/api/(.*)", "dest": "/api/$1" }
     ]
