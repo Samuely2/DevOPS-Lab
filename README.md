@@ -1,6 +1,6 @@
 ### Documentação: Esteira CI/CD para Build e Teste com GitHub Actions
 
-Esta documentação descreve a esteira **CI/CD (Integração Contínua / Entrega Contínua)** configurada para automatizar o **build**, **execução dos testes unitários** e a **validação do código** no repositório GitHub. A esteira foi configurada usando **GitHub Actions** e **Docker** para garantir que a aplicação esteja funcionando corretamente antes de ser implantada ou movida para a próxima etapa.
+(Integração Contínua / Entrega Contínua)** configurada para automatizar o **build**, **execução dos testes unitários** e a **validação do código** no repositório GitHub. A esteira foi configurada usando **GitHub Actions** e **Docker** para garantir que a aplicação esteja funcionando corretamente antes de ser implantada ou movida para a próxima etapa.
 
 ---
 
